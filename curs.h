@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <iostream>   // Pentru std::cout și std::endl
 #include <string>     // Pentru std::string
@@ -46,6 +46,16 @@ public:
         else {
             std::cout << "Elevul nu este înscris la acest curs.\n";
             return false;
+        }
+    }
+    void stergeElev(Elev* elev) {
+        auto it = std::remove(studentiInscrisi.begin(), studentiInscrisi.end(), elev);
+        if (it != studentiInscrisi.end()) {
+            studentiInscrisi.erase(it,studentiInscrisi.end());
+            std::cout << "Elevul a fost șters din cursul " << numeCurs << ".\n";
+        }
+        else {
+            std::cout << "Elevul nu este înscris la cursul " << numeCurs << ".\n";
         }
     }
 
