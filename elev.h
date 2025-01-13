@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,65 +6,70 @@
 class Elev {
 private:
     int id;
-    std::string nume;
+    std::string nume; // Numele elevului
+    std::string prenume; // Prenumele elevului
     std::string username;
     std::string password;
     std::vector<std::string> cursuri;
     bool autentificat = false;
 
 public:
-    Elev(int id, const std::string& nume, const std::string& username, const std::string& password)
-        : id(id), nume(nume), username(username), password(password) {}
-    Elev() : id(0), nume("") {}
+    Elev(int id, const std::string& nume, const std::string& prenume, const std::string& username, const std::string& password)
+        : id(id), nume(nume), prenume(prenume), username(username), password(password) {}
 
-    // Constructor with two arguments
-    Elev(int id, const std::string& nume) : id(id), nume(nume) {}
+    Elev(int id, const std::string& nume, const std::string& prenume)
+        : id(id), nume(nume), prenume(prenume) {}
 
-    std::string getUsername() const { return username; }
-    std::string getPassword() const { return password; }
+    Elev() : id(0), nume(""), prenume("") {}
 
-    // Getters
+
+    // Getteri
     int getId() const { return id; }
     std::string getNume() const { return nume; }
+    std::string getPrenume() const { return prenume; }
+    std::string getUsername() const { return username; }
+    std::string getPassword() const { return password; }
+ 
 
-    // Autentificare
+
+    // Metodă pentru autentificare
     bool autentificare(const std::string& username, const std::string& password) {
         if (this->username == username && this->password == password) {
             autentificat = true;
-            std::cout << "Autentificare reușita pentru elevul " << nume << "!\n";
+            std::cout << "Autentificare reușită pentru elevul " << nume << " " << prenume << "!\n";
             return true;
         }
         else {
-            std::cout << "Autentificare eșuata. Verificați datele introduse.\n";
+            std::cout << "Autentificare eșuată. Verificați datele introduse.\n";
             return false;
         }
     }
 
     void deconectare() {
         autentificat = false;
-        std::cout << "Elevul " << nume << " a fost deconectat.\n";
+        std::cout << "Elevul " << nume << " " << prenume << " a fost deconectat.\n";
     }
 
     // Gestionare cursuri
     void inscriereLaCurs(const std::string& numeCurs) {
         if (autentificat) {
             cursuri.push_back(numeCurs);
-            std::cout << "Elevul " << nume << " s-a inscris la cursul " << numeCurs << ".\n";
+            std::cout << "Elevul " << nume << " " << prenume << " s-a înscris la cursul " << numeCurs << ".\n";
         }
         else {
-            std::cout << "Autentificare necesara pentru inscrierea la cursuri.\n";
+            std::cout << "Autentificare necesară pentru înscrierea la cursuri.\n";
         }
     }
 
     void afisareCursuri() const {
         if (autentificat) {
-            std::cout << "Elevul " << nume << " este înscris la urmatoarele cursuri:\n";
+            std::cout << "Elevul " << nume << " " << prenume << " este înscris la următoarele cursuri:\n";
             for (const auto& curs : cursuri) {
                 std::cout << "- " << curs << std::endl;
             }
         }
         else {
-            std::cout << "Autentificare necesara pentru vizualizarea cursurilor.\n";
+            std::cout << "Autentificare necesară pentru vizualizarea cursurilor.\n";
         }
     }
 };
