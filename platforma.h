@@ -27,8 +27,8 @@ public:
         }
     }
 
-    // �nscriere elev la un curs specificat
-    void inscriereElevLaCurs(int idElev, const std::string& numeCurs) {
+    // Înscriere elev la un curs specificat
+      void inscriereElevLaCurs(int idElev, const std::string& numeCurs) {
         auto itElev = std::find_if(elevi.begin(), elevi.end(), [idElev](const Elev& elev) {
             return elev.getId() == idElev;
             });
@@ -41,26 +41,56 @@ public:
             itCurs->adaugaElev(&(*itElev));
         }
     }
+    
+      void stergeElevdelaCurs(int idElev, const std::string& numeCurs) {
+          auto itElev = std::find_if(elevi.begin(), elevi.end(), [idElev](const Elev& elev) {
+              return elev.getId() == idElev;
+              });
+
+          auto itCurs = std::find_if(cursuri.begin(), cursuri.end(), [&numeCurs](const Curs& curs) {
+              return curs.getNumeCurs() == numeCurs;
+              });
+
+          if (itElev != elevi.end() && itCurs != cursuri.end()) {
+              itCurs->stergeElev(&(*itElev));
+              std::cout << "Elevul cu ID-ul " << idElev << " a fost șters de la cursul " << numeCurs << ".\n";
+          }
+          else {
+              if (itElev == elevi.end()) {
+                  std::cout << "Elevul cu ID-ul " << idElev << " nu a fost găsit.\n";
+              }
+              if (itCurs == cursuri.end()) {
+                  std::cout << "Cursul " << numeCurs << " nu a fost găsit.\n";
+              }
+          }
+      }
+
 
     // Gestionare Elevi
-    void adaugaElev(int id, const std::string& nume) {
-        elevi.emplace_back(id, nume);
-        std::cout << "Elevul " << nume << " a fost adaugat.\n";
+    void adaugaElev(int id, const std::string& nume, const std::string& prenume, const std::string& username, const std::string& password) {
+        elevi.emplace_back(id, nume, prenume, username, password);  // Folosim constructorul cu username ?i parola
+        std::cout << "Elevul " << nume << " " << prenume << " a fost adăugat cu username-ul " << username << ".\n";
     }
-
+  
     void stergeElev(int id) {
-        auto it = std::remove_if(elevi.begin(), elevi.end(), [id](const Elev& elev) {
+        auto itElev = std::find_if(elevi.begin(), elevi.end(), [id](const Elev& elev) {
             return elev.getId() == id;
             });
 
-        if (it != elevi.end()) {
-            std::cout << "Elevul cu ID-ul " << id << " a fost sters.\n";
-            elevi.erase(it, elevi.end());
+        if (itElev != elevi.end()) {
+            // Eliminăm elevul din toate cursurile la care este înscris
+            for (auto& curs : cursuri) {
+                curs.stergeElev(&(*itElev));
+            }
+            std::cout << "Elevul cu ID-ul " << id << " a fost șters.\n";
         }
         else {
-            std::cout << "Elevul cu ID-ul " << id << " nu a fost gasit.\n";
+            std::cout << "Elevul cu ID-ul " << id << " nu a fost găsit.\n";
         }
     }
+
+
+   
 
     // Gestionare Cursuri
     void adaugaCurs(const std::string& numeCurs, const std::string& profesor, int capacitateMaxima) {
@@ -83,9 +113,11 @@ public:
     }
 
     // Gestionare Profesori
-    void adaugaProfesor(const std::string& nume, const std::string& username, const std::string& password) {
-        profesori.emplace_back(nume, username, password);
-        std::cout << "Profesorul " << nume << " a fost adaugat.\n";
+   
+
+    void adaugaProfesor(const std::string& nume, const std::string& prenume, const std::string& username, const std::string& password) {
+        profesori.emplace_back(nume, prenume, username, password);  // Folosim constructorul cu prenume
+        std::cout << "Profesorul " << nume << " " << prenume << " a fost adăugat.\n";
     }
 
 
